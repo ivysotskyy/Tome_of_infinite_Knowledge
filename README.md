@@ -12,10 +12,11 @@
   * [Merge Sort](#merge-sort)
   + [Counting Sort](#counting-sort)
 + **Inheritance**
-  * [Type casting](#inheritance)
+  * [Abstract Classes](#abstract-classes)
+  + [Type casting](#type-casting)
 + **File I/O & Exceptions**
-  * [File I/O](#file I/O)
-  + [Exceptons](#exceptions)
+  * [File I/O](#file-I/O)
+  + [Exceptions](#exceptions)
 + **JDBC**
   * [DB Connection](#dbConnection)
 + **Design Patterns** [_`link`_](https://sourcemaking.com/design_patterns)
@@ -242,6 +243,180 @@ public class Sortting {
 > _Sorted array of size 101:_  
 > _Counting Sort finished in: 19800 nanoseconds._
 ---
+
+# <span Style="color: DarkMagenta;">Inheritance</span>
+
+## Abstract Classes
+
+Basically describes everything that derived classes have in common.  
+
+Abstract methods have to be implemented and provide an abstraction layer for the derived Classes  
+to implement.
+
+~ **_Weapon.java_**
+```Java
+public abstract class Weapon {
+  int damage;
+  abstract void doDamage(Character target);
+  //Default Constructor
+  Weapon(int damage) {
+      this.damage = damage;
+  }
+}
+```
+~ **_Character.java_**
+```Java
+public abstract class Character {
+  private final String name;
+  //Every character has a Weapon and can equip it.
+  private Weapon weapon;
+  abstract void equip(Weapon w);
+
+  /* Implementation of damage type depends on the Type of weapon */
+  public void attack(Character target) {
+      weapon.doDamage(target);
+  }
+  Character(String name){
+      this.name = name;
+  }
+  /* We can do default getters and setters as well */
+  public String getName() {
+      return this.name;
+  }
+  public void setWeapon(Weapon w) {
+      weapon = w;
+  }
+  public Weapon getWeapon() {
+      return weapon;
+  }
+}
+```
+Now we can just create solid implementation of our abstract classes, and the compiler will even tell us what should be implemented.
+
+~ **_MeleeWeapon.java_**
+```Java
+public class MeleeWeapon extends Weapon{
+  MeleeWeapon(int damage) {
+      super(damage);
+  }
+  @Override
+  void doDamage(Character target) {
+      //Sword do a Slash
+      System.out.println("Slash " + target.getName() +" : "+"("+ target.getClass()+")"+ " and do " + damage + " Damage!");
+  }
+}
+```
+
+~ **_MagicWeapon.java_**
+```Java
+public class MagicWeapon extends Weapon {
+
+  MagicWeapon(int damage) {
+      super(damage);
+  }
+
+  @Override
+  void doDamage(Character target) {
+      //Stuff do Magic
+      System.out.println("Cast spell on " + target.getName() +" : "+"("+ target.getClass()+")"+ " and do " + damage + " Damage!");
+  }
+}
+```
+~ **_Wizard.java_**
+```Java
+public class Wizard extends Character{
+  Wizard(String name) {
+      super(name);
+  }
+  @Override
+  void equip(Weapon w) {
+      setWeapon(w);
+  }
+}
+```
+~ **_Warrior.java_**
+```Java
+public class Warrior extends Character{
+  Warrior(String name) {
+      super(name);
+  }
+  @Override
+  void equip(Weapon w) {
+      setWeapon(w);
+  }
+}
+```
+## Type casting
+
+After we got our inheritance down we can make further use of the **Parent** classes that we derive from.
+
+I'll create some sort of storage where we can store **weapons** for our **characters**.  
+It should not care what Objects we store as long as the item derives from **Weapon** class.
+
+~ **_WeaponStorage.java_**
+```Java
+public class WeaponStorage{
+  /* Does not care what weapons to store */
+  private final List<Weapon> weapons = new LinkedList<>();
+  public void storeWeapon(Weapon weapon) {
+      weapons.add(weapon);
+  }
+  /* Our Weapon dispenser methods */
+  public MagicWeapon getMagicWeapon() {
+      /* Just a stream to filter out MagickWeapons and get the first one from the list */
+      Optional<Weapon> o = weapons.stream().filter((x) -> x instanceof MagicWeapon).findAny();
+      if(o.isPresent()) {
+          weapons.remove(o.get());        //Don't forget to remove it from the storage
+          return (MagicWeapon) o.get();   //Optional contains a Weapon from the list so we have to explicitly cast it to a MagicWeapon  
+      }else {
+          System.out.println("No magic weapon could be found");
+          return null;
+      }
+  }
+  public MeleeWeapon getMeleeWeapon() {
+      /* Just a stream to filter out MeleeWeapons and get the first one from the list */
+      Optional<Weapon> o = weapons.stream().filter((x) -> x instanceof MeleeWeapon).findAny();
+      if(o.isPresent()) {
+          weapons.remove(o.get());        //Don't forget to remove it from the storage
+          return (MeleeWeapon) o.get();   //Optional contains a Weapon from the list so we have to explicitly cast it to a MeleeWeapon  
+      }else {
+          System.out.println("No magic weapon could be found");
+          return null;
+      }
+  }
+}
+```
+To make sure our characters get the right weapons we implement two getter methods  
+to downcast **Weapons** out of the storage back to their child class.
+
+####So now we can just...
+~ **_RpgGame.java_**
+```Java
+public class RpgGame {
+  public static void main(String[] args) {
+      /* Instantiating our RPG Characters */
+      Character barbarian = new Warrior("Conan");         //Java knows that Warrior *is a* child of Character class
+      Character harry = new Wizard("Harry Potter");       //and can upcast implicitly
+      /* Instantiating new Weapons for them */
+      MeleeWeapon axe = new MeleeWeapon(15);
+      MagicWeapon magicStick = new MagicWeapon(10);
+      /* Deposit weapons in to storage */
+      WeaponStorage storage = new WeaponStorage();
+      storage.storeWeapon(axe);
+      storage.storeWeapon(magicStick);
+      //Add some more weapons to give Harry a fair chance
+      storage.storeWeapon(new MagicWeapon(5));
+      storage.storeWeapon(new MagicWeapon(999));
+      /* Equip our characters with weapons */
+      barbarian.equip(storage.getMeleeWeapon());
+      harry.equip(storage.getMagicWeapon());
+      /* Make them fight */
+      barbarian.attack(harry);
+      harry.attack(barbarian);
+  }
+}
+```
+
 # <span Style="color: DarkMagenta;">JDBC</span>
 
 ## Database connection
@@ -294,5 +469,3 @@ public class Database {
 <a href="http://tutorials.jenkov.com/java-concurrency/index.html">tutorials.jenkov.com/java-concurrency</a>
 
 ---
-
-## Inheritance
