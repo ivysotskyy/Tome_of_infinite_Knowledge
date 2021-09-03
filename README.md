@@ -18,7 +18,7 @@
   * [File I/O](#file-I/O)
   + [Exceptions](#exceptions)
 + **JDBC**
-  * [DB Connection](#dbConnection)
+  * [DB Connection](#database-connection)
 + **Design Patterns** [_`link`_](https://sourcemaking.com/design_patterns)
   + [Design Patterns & refactoring](https://refactoring.guru/design-patterns)
     * [DAO](#data-acces-object)
