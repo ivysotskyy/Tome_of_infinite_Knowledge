@@ -418,7 +418,7 @@ public class RpgGame {
 ```
  
 **Console output:**
-> Slash Harry Potter : (class Wizard) and do 15 Damage!
+> Slash Harry Potter : (class Wizard) and do 15 Damage!   
 > Cast spell on Conan : (class Warrior) and do 10 Damage!
 
 # <span Style="color: DarkMagenta;">JDBC</span>
