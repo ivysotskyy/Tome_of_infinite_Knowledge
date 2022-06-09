@@ -7,6 +7,7 @@ designs more understandable, flexible, and maintainable.
 
 As a whole, the **SOLID** principles make arguments for how code should be split up, which parts should be internal or
 exposed, and how code should use other code.
+
 ---
 
 ### The SOLID ideas are
@@ -36,6 +37,7 @@ Java. <br> **Non-object-oriented paradigms**, most notably functional programmin
 are also more common in these new languages.<br>
 Many of the things that SOLID really cared about - such as classes and interfaces, data hiding, and polymorphism - are
 no longer things that programmers deal with every day.
+
 ---
 
 ### Single Responsibility principle
