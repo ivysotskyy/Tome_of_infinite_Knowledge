@@ -38,6 +38,7 @@ For example, instead of your code working with ``Cars``, it could work with ``Ve
 start handling ``Motorcacles`` , the changes necessary to do so is mitigated by the fact that you were never really
 talking about ``Cars`` to begin with.
 
+
 The higher you go with abstraction, the more flexible you make your code, but also the harder it is to understand.
 Everyone knows what a ``Car`` is, but when you start working with ``Vehicles``, it becomes more difficult to work with
 ``Car``-specific things like booster seats and steering wheels. And if you keep going higher up the abstraction tree,
