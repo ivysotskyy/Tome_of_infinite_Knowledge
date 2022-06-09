@@ -41,6 +41,7 @@ Everyone knows what a ``Car`` is, but when you start working with ``Vehicles``, 
 ``Car``-specific things like booster seats and steering wheels. And if you keep going higher up the abstraction tree,
 you might find yourself coding around ``Transportation``, ``ManufacturedGoods``, even plain  old ``Objects``,
 and have a very hard time figuring out how to fill up your tank.
+
 ---
     A mantainable system is determenistic, meaning there 
     should be an obviusly correct wy to extend your system
