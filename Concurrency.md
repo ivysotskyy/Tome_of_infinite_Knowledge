@@ -2,7 +2,7 @@
 
 ---
 <details>
-  <summary> <b>Introduction</b> </summary>
+  <summary> <b><u>Introduction</u></b> </summary>
 <p>
   Computer users take it for granted that their systems can do more than one thing at a time. They assume that they can
   continue to work in a word processor, while other applications download files, manage the print queue, and stream audio.
@@ -23,7 +23,9 @@
 
 <h2>Processes and Threads</h2>
 <details>
-    <Summary>Expand</Summary>
+
+  <summary><u>Expand</u></summary>
+
 <p>
   In concurrent programming, there are two basic units of execution: <b>processes</b> and <b>threads</b>
   Int the Java programming language, concurrent programming is mostly concerned with threads. However, processes are 
@@ -71,7 +73,7 @@
 
 <details>
 
-<summary>Expand</summary>
+<summary><u>Expand</u></summary>
 
 <p>
   Each thread is associated with an instance of the class <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Thread.html">Thread</a>.
@@ -96,9 +98,10 @@
   There are two ways to do this:
 </p>
 
-+ Provide a ``Runnable`` object. The <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Runnable.html">Runnable</a> 
-interface defines a single method, ``run()``, meant to contain the
-code executed in the thread. The ``Runnable`` object is passed to the ``Thread`` constructor, as in the Example:
++ Provide a ``Runnable`` object. The <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Runnable.html">
+  Runnable</a>
+  interface defines a single method, ``run()``, meant to contain the code executed in the thread. The ``Runnable``
+  object is passed to the ``Thread`` constructor, as in the Example:
 
 ```java
 public class HelloRunnable implements Runnable {
@@ -130,6 +133,7 @@ public class HelloRunnable implements Runnable {
 
 }
 ```
+
 <p>Notice that both examples invoke <code>Thread.start()</code> in order to start the new thread.</p>
 <p>
   Which of these idioms should you use? The first idiom, which employs a Runnable object, is more general, because the 
@@ -146,3 +150,53 @@ public class HelloRunnable implements Runnable {
 
 ---
 
+<h2>Pausing Execution with Sleep</h2>
+
+<details>
+
+  <summary><u>Expand</u></summary>
+
+<p>
+  <code>Thread.sleep()</code> causes the current thread to suspend execution for a specified period. This is an efficient
+  means of making processor time available to the other threads of an applications that might be running on a computer system.
+  The <code>sleep()</code> method can also be used for pacing, as shown in the example that follows, and waiting for 
+  another thread with duties that are understood to have time requirements, as with the <code>SimpleThread</code> example 
+  in a later section.
+</p>
+<p>
+  Two overloaded versions of sleep are provided: one that specifies the sleep time to the millisecond and one that 
+  specifies the sleep time to the nanosecond. However, these sleep times are not guaranteed to be precise, because they 
+  are limited by the facilities provided by the underlying OS. Also, the sleep period can be terminated by interrupts, 
+  as we'll see in a later section. In any case, you cannot assume that invoking sleep will suspend the thread for 
+  precisely the time period specified.
+</p>
+
+```JAVA
+  public class SleepMessages {
+  public static void main(String[] args) throws InterruptedException {
+    String[] importantIfo = {
+            "Mares eat oats",
+            "Does eat oats",
+            "Little lambs eat ivy",
+            "A kid will eat ivy too"
+    };
+
+    for(int i = 0; i < importantInfo.lenght; i++) {
+      //Pause for 4 seconds
+      Thread.sleep(4000);
+      //Print a message
+      System.out.println(importantInfo[i]);
+    }
+  }
+}
+```
+
+<p>
+  Notice that <code>main()</code> declares that it <code>throws InterruptedException</code>. This is an exception that 
+  <code>sleep</code> throws when another thread interrupts the current thread while <code>sleep</code> is active.
+  Since this application has not defined another thread to cause the interrupt, it doesn't bother to catch 
+  <code>InterruptedException</code>.
+</p>
+</details>
+
+[source](https://docs.oracle.com/javase/tutorial/essential/concurrency/sleep.html)
