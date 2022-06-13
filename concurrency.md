@@ -199,6 +199,8 @@ public class HelloRunnable implements Runnable {
 </p>
 </details>
 
+---
+
 <h2>Interrupts</h2>
 
 <details>
@@ -223,17 +225,17 @@ public class HelloRunnable implements Runnable {
 </p>
 
 ```java
-  for (int i = 0; i < importantInfo.lenght; i++) {
-    // Pause for 4 seconds
-    try {
-      Thread.sleep(4000);
-    } catch (InterruptedException e) {
-      // W've been interrupted: no more messages.
-      return;
-    }
-    // Print a message
-    System.out.printlm(importantInfo[i]);
-}
+  for(int i=0;i<importantInfo.lenght;i++){
+        // Pause for 4 seconds
+        try{
+        Thread.sleep(4000);
+        }catch(InterruptedException e){
+        // W've been interrupted: no more messages.
+        return;
+        }
+        // Print a message
+        System.out.printlm(importantInfo[i]);
+        }
 
 ```
 
@@ -246,13 +248,13 @@ public class HelloRunnable implements Runnable {
 </p>
 
 ```java
-  for (int i = 0; i < inputs.length; i++) {
-    heavyCrunch(inputs[i]);
-    if (Thread.interrupted()) {
-      // We'v been interrupted: no more crunching.
-      return;  
-    }
-  }
+  for(int i=0;i<inputs.length;i++){
+        heavyCrunch(inputs[i]);
+        if(Thread.interrupted()){
+        // We'v been interrupted: no more crunching.
+        return;
+        }
+        }
 ```
 
 <p>
@@ -261,9 +263,9 @@ public class HelloRunnable implements Runnable {
 </p>
 
 ```java
-  if (Thread.interrupted()) {
-    throw new InterruptedException();
-  }
+  if(Thread.interrupted()){
+        throw new InterruptedException();
+        }
 ```
 
 <p>
@@ -307,6 +309,8 @@ public class HelloRunnable implements Runnable {
 
 </details>
 
+---
+
 <h2>The Simple Thread Example</h2>
 <p>
   The following example brings together some of the concepts of mentioned so far. <code>SimpleThreads</code> consists of two
@@ -321,8 +325,6 @@ public class HelloRunnable implements Runnable {
 <summary><b>Example</b></summary>
 
 ```java
-  package at.logitek.exercise.spotify;
-
 public class SimpleThread {
 
   // Display a message, preceded by the name of the current thread
@@ -392,6 +394,8 @@ public class SimpleThread {
 
 </details>
 
+---
+
 <h2>Synchronisation</h2>
 <p>
   Threads communicate primary by sharing access to fields and the objects reference fields refer to. This form of communication
@@ -401,40 +405,227 @@ public class SimpleThread {
 <p>
   However, synchronisation can introduce <em>thread contention</em>, which occurs when two or more threads try to access the same
   resource simultaneously and cause the Java runtime to execute one or more threads more slowly, or even suspend their execution.
-  <a href="#starvation_and_livelock">Starvation and livelock</a> are form of thread contention. See the section 
-  <a href="#thread-interference">Liveness</a> for more information.
+  <a href="#starvation-and-livelock"><u>Starvation and livelock</u></a> are form of thread contention. See the section 
+  <a href="#liveness">Liveness</a> for more information.
 </p>
+
+<h3>Thread Interference</h3>
 
 <details>
 
-<summary><b>Expand</b></summary>
-
-<h3>Thread Interference</h3>
+  <summary><b>Expand</b></summary>
 
 <p>Consider a simple class called <code>Counter</code> </p>
 
 ```java
   class Counter {
-    private int c = 0;
-  
-    public void increment() {
-      c++;
-    }
-  
-    public void decrement() {
-      c--;
-    }
-    
-    public int value() {
-      return c;
-    }
-    
+  private int c = 0;
+
+  public void increment() {
+    c++;
   }
+
+  public void decrement() {
+    c--;
+  }
+
+  public int value() {
+    return c;
+  }
+
+}
 ```
+
+<p>
+  <code>Counter</code> is designed so that each invocation of <code>increment()</code> will add 1 to <code>c</code>, and 
+  each invocation of <code>decrement()</code> will subtract 1 from <code>c</code>. However, if a <code>Counter</code> object 
+  if referenced from multiple threads, interference between thread may prevent this from happening as expected.<br>
+  &nbsp;&nbsp; Interference happens when two operations, running in different threads, but acting on the same data, <i>interleave</i>.<br>
+  &nbsp;&nbsp; This means that two operations of multiple steps, and the sequence of steps overlap.<br>
+  It might not seem possible for operations on instance of <code>Counter</code> to interleave, since both operations on <code>c</code>
+  are single, simple statements. However, even a simple statement can translate to multiple steps by the virtual machine. 
+  The single expression c++ can be decomposed into three steps:
+</p>
+
+<ol>
+  <li>Retrieve the current valie of <code>c</code>.</li>
+  <li>Increment the retrieved value by 1.</li>
+  <li>Store the incremented value back in <code>c</code>.</li>
+</ol>
+
+<p>
+  The expression <code>c--;</code> can be decomposed the same way, except that the second step decrements instead of incrementing.<br>
+  Suppose Thread <b>A</b> invokes <code>increment()</code> at about the same time Thread <b>B</b> invokes <code>decrement</code>.
+  If the initial value of <code>c</code> is 0, their interleaved action might follow this sequence:
+</p>
+
+<ol>
+  <li><b>Thread A:</b> Retrieve c.</li>
+  <li><b>Thread B:</b> Retrieve c.</li>
+  <li><b>Thread A:</b> Increment retrieved value; result is <u>1</u></li>
+  <li><b>Thread B:</b> Decrement retrieved value; result is <u>-1</u></li>
+  <li><b>Thread A:</b> Store result in c; c is now <u>1</u></li>
+  <li><b>Thread A:</b> Store result in c; c is now <u>-1</u></li>
+</ol>
+
+<p>
+  Thread A's result is lost, overwritten by Thread B. This particular interleaving is only one possibility. Under different
+  circumstances it might be Thread B's result that gets lost, or there could be no error at all. Because they are unpredictable,
+  thread interference bugs can be difficult to detect and fix.
+</p>
+
+</details>
+
+---
+
+<h3>Memory Consistency Errors</h3>
+
+<details>
+
+  <summary><b>Expand</b></summary>
+
+<p>
+  <em>Memory consistency errors</em> occur when different threads have inconsistent views of what should be the same data.
+  The causes of memory consistency errors are complex and beyond the scope of this tutorial. Fortunately, the programmer does not need a
+  detailed understanding of these causes. All that is needed is a strategy for avoiding them.<br>
+  The key to avoiding memory consistency errors is understanding the <b>happens-before</b> relationship. 
+  This relationship is simply a guarantee that memory writes by one specific statement are visible to another specific statement.
+  To see this, consider the following example. Suppose a simple <code>int</code> field is defined and initialized:
+</p>
+
+```java
+  int counter=0;
+```
+
+<p>The <code>counter</code> field is shared between two threads, <b>A</b> and <b>B</b>. Suppose thread <b>A</b> increments <code>counter</code>:</p>
+
+```java
+  counter++;
+```
+
+<p>Then, shortly afterwards, thread <b>B</b> prints out <code>counter</code>:</p>
+
+```java
+  System.out.println(counter);
+```
+
+<p>
+  If the two statements had been executed in the same thread, it would be safe to assume that the value printed out would be
+  "1". But if the two statements are executed in separate threads, the value printed out might well be "0", because there's 
+  no guarantee that thread <b>A</b>'s change to <code>counter</code> will be visible to thread <b>B</b> - unless the programmer 
+  has established a <b>happens-before</b> relationship between these two statements.
+</p>
+<p>We've already seen two actions that create <b>happens-before</b> relationships.</p>
+
+<ul>
+  <li>When a statement invokes <code>Thread.start()</code>, every statement that has a happens-before relationship with 
+  that statement also has a happens-before relationship with every statement executed by the new thread. The effect of the 
+  code that led up to the creation of the new thread are visible to the new thread.</li>
+  <li>When a thread terminates and causes <code>Thread.join()</code> in another thread to return, then all the statements 
+  executed by the terminated thread have a happens-before relationship with all the statements following the successful
+  join. The effects of the code in the thread are now visible to the thread that performed the join.</li>
+</ul>
+
+<p>
+  for a list of actions that create happens-before relationships, refer to the 
+  <a href="https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/package-summary.html#MemoryVisibility">
+    Summary page of the <code>java.util.concurrent</code> package
+  </a>.
+</p>
+
+</details>
+
+---
+
+<h3>Synchronized Methods</h3>
+
+<details>
+
+  <summary><b>Expand</b></summary>
+
+<p>
+  The Java programming language provides two basic synchronization idioms: <b>synchronized methods</b> and <b>synchronized statements</b>.
+  <br>To make a method synchronized, simply add the <code>synchronized</code> keyword to its declaration.
+</p>
+
+```java
+  public class SynchronizedCounter {
+  private int c = 0;
+
+  public synchronized void increment() {
+    c++;
+  }
+
+  public synchronized void decrement() {
+    c--;
+  }
+
+  public synchronized int value() {
+    return c;
+  }
+}
+```
+
+<p>If <code>count</code> is an instance of <code>SynchronizedCounter</code>, then making these methods synchronized has two effects:</p>
+
+<ol>
+  <li>It is not possible for two invocations of synchronized methods on the same object to interleave.
+  When one thread is executing a synchronized method for an object, all other threads that invoke synchronized methods
+  for the same object block <em>(suspend execution)</em> until the first thread is done with the object</li>
+  <li>When a synchronized method exits, it automatically establishes a <em>happens-before</em> relationship with 
+  <em>any subsequent invocation</em> of a synchronized method for the same object. This guarantees that changes to the 
+  state of the object are visible to all threads.</li>
+</ol>
+
+<p>
+  Note that constructors cannot be synchronized - using the <code>synchronized</code> keyword with a constructor is a syntax
+  error. Synchronizing constructors doesn't make sense, because only the thread that creates an object should have access 
+  to it while it is being constructed.
+</p>
+
+<blockquote>
+  <b>Warning:</b> When constructing an object that will be shared between threads, be very careful that a reference to 
+  the object does not "leak" prematurely. For example, suppose you want to maintain a List called 
+  instances containing every instance of class. You might be tempted to add the following line to your constructor:
+  <br><code>instances.add(this);</code><br>
+  But then other threads ca use <code>instances</code> to access the object before construction of 
+  the object is complete.
+</blockquote>
+
+<p>
+  Synchronized methods enable a simple strategy for preventing thread interfearence and memory consistency errors: if an 
+  object is visible to more than one thread, all reads or writes to that object's variables are done through 
+  <code>synchronized</code> methods. (An important exception: <code>final</code> fields, which cannot be modified after the 
+  object is constructed, can be safely read through <em>non-synchronized</em> methods, once the object is constructed) 
+  This strategy is effective, but can present problems with <a href="liveness">liveness</a>.
+</p>
+</details>
+
+---
+
+<h3>Intrinsic Locks and Synchronization</h3>
+
+<details>
+
+  <summary><b>Expand</b></summary>
 
 
 
 </details>
 
+-------
+
+<h2>Liveness</h2>
+<p>
+  A concurrent application's ability to execute in a timely manner is known as its <b>liveness</b>. This section describes the most
+  common kind of liveness problem, <b>deadlock</b>, and goes on to briefly describe two other liveness problems, 
+  <b>starvation and livelock</b>.
+</p>
+
+<details>
+
+  <summary><b>Expand</b></summary>
+
+</details>
 
 [source](https://docs.oracle.com/javase/tutorial/essential/concurrency/sleep.html)
