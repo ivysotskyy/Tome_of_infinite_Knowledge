@@ -73,7 +73,7 @@
 
 <details>
 
-<summary><u>Expand</u></summary>
+<summary> <u>Expand</u> </summary>
 
 <p>
   Each thread is associated with an instance of the class <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Thread.html">Thread</a>.
