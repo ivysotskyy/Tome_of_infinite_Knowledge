@@ -402,14 +402,14 @@ public class SimpleThread {
   However, synchronisation can introduce <em>thread contention</em>, which occurs when two or more threads try to access the same
   resource simultaneously and cause the Java runtime to execute one or more threads more slowly, or even suspend their execution.
   <a href="#starvation_and_livelock">Starvation and livelock</a> are form of thread contention. See the section 
-  <a href="#Liveness">Liveness</a> for more information.
+  <a href="#thread-interference">Liveness</a> for more information.
 </p>
 
 <details>
 
 <summary><b>Expand</b></summary>
 
-<h3 id="Liveness">Thread Interference</h3>
+<h3>Thread Interference</h3>
 
 <p>Consider a simple class called <code>Counter</code> </p>
 
