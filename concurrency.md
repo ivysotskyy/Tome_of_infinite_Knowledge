@@ -24,7 +24,7 @@
 <h2>Processes and Threads</h2>
 <details>
 
-  <summary><u>Expand</u></summary>
+  <summary><b>Expand</b></summary>
 
 <p>
   In concurrent programming, there are two basic units of execution: <b>processes</b> and <b>threads</b>
@@ -73,7 +73,7 @@
 
 <details>
 
-<summary> <u>Expand</u> </summary>
+<summary><b>Expand</b></summary>
 
 <p>
   Each thread is associated with an instance of the class <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Thread.html">Thread</a>.
@@ -154,7 +154,7 @@ public class HelloRunnable implements Runnable {
 
 <details>
 
-  <summary><u>Expand</u></summary>
+  <summary><b>Expand</b></summary>
 
 <p>
   <code>Thread.sleep()</code> causes the current thread to suspend execution for a specified period. This is an efficient
@@ -198,5 +198,243 @@ public class HelloRunnable implements Runnable {
   <code>InterruptedException</code>.
 </p>
 </details>
+
+<h2>Interrupts</h2>
+
+<details>
+
+<summary><b>Expand</b></summary>
+
+<p>
+  An <i>Interrupt</i> is an indicator to a thread that it should stop what it is doing and do something else. It's up to the 
+  programmer to decide how a thread responds to an interrupt, but it is very common for the thread to terminate. This is 
+  the usage emphasized in this lesson.<br>
+  A thread sends an interrupt by invoking <code>interrupt()</code> on the <code>Thread</code> object for the thread to be 
+  interrupted. For the interrupt mechanism to work correctly, the interrupted thread must support its own interruption.
+</p>
+
+<h3>Support Interruption</h3>
+
+<p>
+  How does a thread support its own interruption? This depends on what it's currently doing. If the thread is frequently 
+  invoking methods that throw <code>InterruptedException</code>, it simply returns from <code>run()</code> method after it 
+  catches that exception. For example,<br> suppose the central message loop in the <code>SleepMessage</code> example were
+  int the <code>run()</code> method of a thread's <code>Runnable</code> object. Then it might be modified as follows to support interrupts:
+</p>
+
+```java
+  for (int i = 0; i < importantInfo.lenght; i++) {
+    // Pause for 4 seconds
+    try {
+      Thread.sleep(4000);
+    } catch (InterruptedException e) {
+      // W've been interrupted: no more messages.
+      return;
+    }
+    // Print a message
+    System.out.printlm(importantInfo[i]);
+}
+
+```
+
+<p>
+  Many methods that throw <code>InterruptedException</code>, such as sleep. are disigned to cancel their current 
+  operation and return immediately when an interrupt is received.<br>
+  What if a thread goes a long time without invoking a method that throws <code>InterruptedException</code>? Then it must
+  periodically invoke <code>Thread.interrupted()</code>, which returns <code>true</code> if an interrupt has been received.
+  For example:
+</p>
+
+```java
+  for (int i = 0; i < inputs.length; i++) {
+    heavyCrunch(inputs[i]);
+    if (Thread.interrupted()) {
+      // We'v been interrupted: no more crunching.
+      return;  
+    }
+  }
+```
+
+<p>
+  In this simple example, the code simply tests for the interrupt and exits the thread if one has been received. In more 
+  complex applications, it might make more sense to throw an <code>InterruptedException</code>:
+</p>
+
+```java
+  if (Thread.interrupted()) {
+    throw new InterruptedException();
+  }
+```
+
+<p>
+  This allows interrupt handling code to be centralized in a <code>catch</code> clause.
+</p>
+
+<h3>The Interrupt Status Flag</h3>
+
+<p>
+  The interrupt mechanism is implemented using an internal flag known as the <i>interrupt status</i>. Invoking <code>Thread.interrupt()</code>
+  sets this flag. When a thread checks for an interrupt by invoking the static method <code>Thread.interrupted()</code>, 
+  interrupt status is cleared. The non-static <code>isInterrupted()</code> method, which is used by one thread to query 
+  the interrupt status of another, does not change the interrupt status flag.<br> By convention, any method that exits 
+  by throwing an <code>InterruptedException</code> clears interrupted status when it does so. However, it's always 
+  possible that interrupt status will immediately be set again, by another thread invoking <code>interrupt()</code>.
+</p>
+
+</details>
+
+<h2>Joins</h2>
+
+<details>
+
+<summary><b>Expand</b></summary>
+
+<p>
+  The <code>join()</code>  method allows one thread to wait for the completion of another. If <code>t</code> is a 
+  <code>Thread</code> object whose thread is currently executing.<br>
+</p>
+
+```java
+ t.join();
+```
+
+<p>
+  causes the current threat to pause execution until <code>t</code>'s thread terminates. Overloads of <code>join</code>
+  allow the programmer to specify a waiting period. However, as with <code>sleep()</code>, <code>join()</code> is dependent
+  on the OS for timing, so you should not assume that <code>join</code> will wait exactly as long as you specify.<br>
+  Like <code>sleep()</code>, <code>join()</code> responds to an interrupt by exiting with an <code>InterruptedException</code>.
+</p>
+
+</details>
+
+<h2>The Simple Thread Example</h2>
+<p>
+  The following example brings together some of the concepts of mentioned so far. <code>SimpleThreads</code> consists of two
+  threads. The first is the main thread that every Java application has. The main thread creates a new thread from the 
+  <code>Runnable</code> object, <code>MessageLoop</code>, and waits for it to finish. if the <code>MessageLoop</code> 
+  thread takes too long to finish, the main thread interrupts it.<br> The <code>MessageLoop</code>, thread prints out a 
+  series of messages. If interrupted before it has printed all its messages, the <code>MessageLoop</code> thread prints 
+  a message and exits.
+</p>
+<details>
+
+<summary><b>Example</b></summary>
+
+```java
+  package at.logitek.exercise.spotify;
+
+public class SimpleThread {
+
+  // Display a message, preceded by the name of the current thread
+  static void threadMessage(String message) {
+    String threadName = Thread.currentThread().getName();
+    System.out.format("%s: %s%n", threadName, message);
+  }
+
+  private static class MessageLoop implements Runnable {
+    public void run() {
+      String[] importantInfo = {
+              "Mares eat oats",
+              "Does eat oats",
+              "Little lambs eat ivy",
+              "A kid will eat ivy too"
+      };
+      try {
+        for(int i = 0; i < importantInfo.length; i++) {
+          // Pause for 4 seconds
+          Thread.sleep(4000);
+          // Print a message
+          threadMessage(importantInfo[i]);
+        }
+      }catch(InterruptedException e) {
+        threadMessage("I wasn't done!");
+      }
+    }
+  }
+
+  public static void main(String[] args) throws InterruptedException {
+    // Delay, in milliseconds before we interrupt MessageLoop
+    // thread (default one hour).
+    long patience = 1000 * 60 * 60;
+
+    // If command line arguments present, gives patience in seconds.
+    if(args.length > 0) {
+      try {
+        patience = Long.parseLong(args[0]) * 1000;
+      }catch(NumberFormatException e) {
+        System.err.println("Argument mus be an integer.");
+        System.exit(1);
+      }
+    }
+
+    threadMessage("Starting MessageLoop thread");
+    long startTime = System.currentTimeMillis();
+    Thread t = new Thread(new MessageLoop());
+    t.start();
+
+    threadMessage("Waiting for MessageLoop thread");
+    // loop until MessageLoop thread exits
+    while(t.isAlive()) {
+      threadMessage("Still waiting...");
+      // Wait maximum of 1 second for MessageLoop thread to finish.
+      t.join(1000);
+      if(((System.currentTimeMillis() - startTime) > patience) && t.isAlive()) {
+        threadMessage("Tired of waiting!");
+        t.interrupt();
+        // Shouldn't be long now -- wait indefinitely
+        t.join();
+      }
+    }
+    threadMessage("Finally!");
+  }
+}
+```
+
+</details>
+
+<h2>Synchronisation</h2>
+<p>
+  Threads communicate primary by sharing access to fields and the objects reference fields refer to. This form of communication
+  is extremely efficient, but makes two kinds of errors possible: <em>thread interference</em> and <em>memory consistency errors</em>.
+  The tool needed to prevent these errors is <b>synchronisation</b>
+</p>
+<p>
+  However, synchronisation can introduce <em>thread contention</em>, which occurs when two or more threads try to access the same
+  resource simultaneously and cause the Java runtime to execute one or more threads more slowly, or even suspend their execution.
+  <a href="#starvation_and_livelock">Starvation and livelock</a> are form of thread contention. See the section 
+  <a href="#Liveness">Liveness</a> for more information.
+</p>
+
+<details>
+
+<summary><b>Expand</b></summary>
+
+<h3 id="Liveness">Thread Interference</h3>
+
+<p>Consider a simple class called <code>Counter</code> </p>
+
+```java
+  class Counter {
+    private int c = 0;
+  
+    public void increment() {
+      c++;
+    }
+  
+    public void decrement() {
+      c--;
+    }
+    
+    public int value() {
+      return c;
+    }
+    
+  }
+```
+
+
+
+</details>
+
 
 [source](https://docs.oracle.com/javase/tutorial/essential/concurrency/sleep.html)
