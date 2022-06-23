@@ -39,7 +39,7 @@
 <H3>Processes</H3>
 <p>
   A <b>process</b> has a self-contained execution environment. A process generally has a complete, private set of basic 
-  <i>run-time resources</i> ; in particular, each process has its own memory space.
+  <i>run-time resources</i>, in particular, each process has its own memory space.
 </p>
 <p>
   <b>Processes</b> are often seen as synonymous with programs or applications. However, what the user sees as a single
@@ -70,7 +70,6 @@
 ---
 
 <h2>Thread Objects</h2>
-
 <details>
 
 <summary><b>Expand</b></summary>
@@ -151,7 +150,6 @@ public class HelloRunnable implements Runnable {
 ---
 
 <h2>Pausing Execution with Sleep</h2>
-
 <details>
 
   <summary><b>Expand</b></summary>
@@ -202,7 +200,6 @@ public class HelloRunnable implements Runnable {
 ---
 
 <h2>Interrupts</h2>
-
 <details>
 
 <summary><b>Expand</b></summary>
@@ -286,7 +283,6 @@ public class HelloRunnable implements Runnable {
 </details>
 
 <h2>Joins</h2>
-
 <details>
 
 <summary><b>Expand</b></summary>
@@ -410,7 +406,6 @@ public class SimpleThread {
 </p>
 
 <h3>Thread Interference</h3>
-
 <details>
 
   <summary><b>Expand</b></summary>
@@ -479,7 +474,6 @@ public class SimpleThread {
 ---
 
 <h3>Memory Consistency Errors</h3>
-
 <details>
 
   <summary><b>Expand</b></summary>
@@ -538,7 +532,6 @@ public class SimpleThread {
 ---
 
 <h3>Synchronized Methods</h3>
-
 <details>
 
   <summary><b>Expand</b></summary>
@@ -604,13 +597,137 @@ public class SimpleThread {
 ---
 
 <h3>Intrinsic Locks and Synchronization</h3>
+<details>
+
+  <summary><b>Expand</b></summary>
+
+<p>
+  Synchronization is built around an internal entity known as the <b>intrinsic lock</b> or <b>monitor lock</b>. (The API 
+  specification often refers to this entity simply as a "monitor.") Intrinsic locks play a role in both aspects of synchronisation:
+  enforcing exclusive access to an object's state and establishing happens-before relationships that are essential to visibility.
+</p>
+<p>
+  Every object has an intrinsic lock associated with it. By convention, a thread that needs exclusive and consistent access to 
+  an object's fields has to acquire the object's intrinsic lock before accessing them, and then <em>release</em>
+  the intrinsic lock when it's done with them. A thread is said to <em>own</em> the intrinsic lock between the time it has 
+  acquired the lock and released the lock. As long as a thread owns an intrinsic lock, no other thread can acquire the same 
+  lock. The other thread will block when it attempts to acquire the lock.
+</p>
+<p>
+  When a thread releases an intrinsic lock, a happens-before relationship is established between that action and any 
+  subsequent acquisition of the same lock.
+</p>
+<h4>Locks In Synchronization Methods</h4>
+<p>
+  When a thread invokes a synchronized method, it automatically acquires the intrinsic lock for that method's object and 
+  releases it when the method returns. The lock release occurs even if the return was caused by an uncaught exception.
+</p>
+<p>
+  You might wonder what happens when a static synchronized method is invoked, since a static method is associated with a 
+  class, not an object. In this case, the thread acquires the intrinsic lock for the Class object associated with the class. 
+  Thus access to class's static fields is controlled by a lock that's distinct from the lock for any instance of the class.
+</p>
+<h4>Synchronized Statements</h4>
+<p>
+  Another way to create synchronized code is with <em>synchronized statements</em>. Unlike synchronized methods, 
+  synchronized statements must specify the object that provides the intrinsic lock:
+</p>
+
+```java
+  public void addName(String name) {
+    synchronized(this) {
+      lastName = name;
+      nameCount++;
+    }
+    nameList.add(name);
+  }
+```
+
+<p>
+  In this example, the <code>addName()</code> method needs to synchronize changes to <code>lastName</code> and <code>nameCount</code>,
+  but also needs to avoid synchronizing invocations of other object's methods. (Invoking other object's methods from synchronized
+  code can create problems that are described in the section on <b>Liveness</b>).
+</p>
+<p>
+  Synchronised statements are also useful for improving concurrency with fine-grained synchronization. Suppose, for example,
+  class <code>MsLunch</code> has two instance fields, <code>c1</code> and <code>c2</code> that are never used together. 
+  All updates of these fields must be synchronized, but there's no reason to prevent and updare of c1 from being interleaved
+  with an update of c2 - and doing so reduces concurrency by creating unnecessary blocking. Instead of using synchronized 
+  methods or otherwise using the lock associated with <code>this</code> we create two objects solely to provide locks.
+</p>
+
+```java
+public class MsLunch {
+    private long c1 = 0;
+    private long c2 = 0;
+    private Object lock1 = new Object();
+    private Object lock2 = new Object();
+
+    public void inc1() {
+        synchronized(lock1) {
+            c1++;
+        }
+    }
+
+    public void inc2() {
+        synchronized(lock2) {
+            c2++;
+        }
+    }
+}
+```
+
+<p>
+  Use this idiom with extreme care. You must be absolutely sure that it really is safe to interleave access of the affected fields.
+</p>
+
+<h4>Reentrant Synchronisation</h4>
+
+<p>
+  Recall that a thread cannot acquire a lock owned by another thread. But a thread can acquire a lock that it already owns. 
+  Allowing a thread to acquire the same lock more than once enables <em>reentrant synchronization</em>. This describes a situation 
+  where synchronized code, directly or indirectly, invokes a method that also contains synchronized code, and both sets 
+  of code use the same lock. Without reentrant synchronisation, synchronized code would have to take many additional 
+  precautions to avoid having a thread cause.
+</p>
+
+</details>
+
+<h3>Atomic Access</h2>
 
 <details>
 
   <summary><b>Expand</b></summary>
 
-
-
+<p>
+  In programming, an atomic action is one that effectively happens all at once. An atomic action cannot stop in the middle: 
+  it either happens completely, or it doesn't happen at all. No side effects of an atomic action are visible until the action
+  is complete.<br>
+  We have already seen that an increment expression, such as <code>c++</code>, does not describe an atomic action. Even very 
+  simple expressions can define complex actions that can decompose into other actions. However, there are actions you can 
+  specify that are atomic:
+</p>
+<ul>
+  <li>Reads and writes are atomic for reference variables and for most primitive variables (all types except <code>long</code> and <code>double</code>).</li>
+  <li>Reads and writes are atomic for all variables declared <code>volatile</code> (<em>including</em> <code>long</code> and <code>double</code>)</li>
+</ul>
+<p>
+  Atomic actions cannot be interleaved, so they can be used without fear of thread interference. However, this does not 
+  eliminate all need to synchronize atomic actions, because memory consistency errors are still possible. Using <code>volatile</code>
+  variables reduce the risk of memory consistency errors, because any write to a <code>volatile</code> variable, establishes 
+  a happens-before relationship with subsequent reads of that same variable. This means that changes to a <code>volatile</code>
+  variable are always visible to other threads. What's more, it also means that when a thread reads a <code>volatile</code>
+  variable, it sees not just the latest change to the <code>volatile</code>, but also the side effects of the code that 
+  led up the change.<br>
+  Using simple atomic variable access is more efficient than accessing these variables through synchronized code, but 
+  requires more care by the programmer to avoid memory consistency errors. Whether the extra effort is worthwhile depends 
+  on the size and complexity of the application.
+</p>
+<p>
+  Some of the classes in the <a href="https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/package-summary.html"
+  ><code>java.util.concurrent</code></a> package provide atomic methods that do not rely on synchronization. 
+  We'll discuss them in the section on <a href="#high-level-concurrency-objects">High Level Concurrency Objects</a>.
+</p>
 </details>
 
 -------
@@ -621,11 +738,10 @@ public class SimpleThread {
   common kind of liveness problem, <b>deadlock</b>, and goes on to briefly describe two other liveness problems, 
   <b>starvation and livelock</b>.
 </p>
-
 <details>
 
   <summary><b>Expand</b></summary>
 
 </details>
 
-[source](https://docs.oracle.com/javase/tutorial/essential/concurrency/sleep.html)
+[source](https://docs.oracle.com/javase/tutorial/essential/concurrency/deadlock.html)

@@ -17,3 +17,6 @@
 [Real world use cases of bitwise operators](https://stackoverflow.com/questions/2096916/real-world-use-cases-of-bitwise-operators)
 
 [What is the "N+1 selects problem"](https://stackoverflow.com/questions/97197/what-is-the-n1-selects-problem-in-orm-object-relational-mapping)
+
+[Why is processing a sorted array faster than processing an unsorted array?](https://stackoverflow.com/questions/11227809/why-is-processing-a-sorted-array-faster-than-processing-an-unsorted-array?noredirect=1&lq=1)
+
