@@ -4,6 +4,8 @@
 
 ---
 
+![git basic workflow](git/git_basic_workflow.png)
+
 ## git commands:
 
 ---
@@ -28,10 +30,68 @@
 ```bash
   git config --global user.name "<firstname lasname>"
   git config --global user.email "<valid-email>"
-  git config --color.ui auto
+  git config color.ui auto
   git config --global core.editor code
 ```
 
+---
+</details>
+
+[//]: # (init)
+<details>
+
+<summary><b>git init</b> <a href="https://git-scm.com/docs/git-init">docs</a> </summary>
+
+---
++ ``--bare``
+  + Create a bare repository. If ``GIT_DIR`` environment is not set, it is set to the current working directory.
++ ``-b <branchname>``
+  + Name initial branch
++ ``<perm>``
+  + ``<perm>`` is a 3-digit octal number prefixed with 0 and each file will have mode ``<perm>``.
+
+EXAMPLE
+```bash
+  cd /path/to/my/codebase
+  git init      (1)
+  git add .     (2)
+  git commit    (3)
+```
+---
+</details>
+
+[//]: # (remote)
+<details>
+
+<summary><b>git remote</b> <a href="https://git-scm.com/docs/git-remote">docs</a> </summary>
+
+---
+
+
+
+COMMANDS
++ ``add``
++ ``rename``
++ ``rm``
++ ``sest-head``
++ 
+# #TODO
++ 
+```
+git remote [-v | --verbose]
+git remote add [-t <branch>] [-m <master>] [-f] [--[no-]tags] [--mirror=(fetch|push)] <name> <URL>
+git remote rename [--[no-]progress] <old> <new>
+git remote remove <name>
+git remote set-head <name> (-a | --auto | -d | --delete | <branch>)
+git remote set-branches [--add] <name> <branch>…​
+git remote get-url [--push] [--all] <name>
+git remote set-url [--push] <name> <newurl> [<oldurl>]
+git remote set-url --add [--push] <name> <newurl>
+git remote set-url --delete [--push] <name> <URL>
+git remote [-v | --verbose] show [-n] <name>…​
+git remote prune [-n | --dry-run] <name>…​
+git remote [-v | --verbose] update [-p | --prune] [(<group> | <remote>)…​]
+```
 ---
 </details>
 
@@ -100,6 +160,11 @@ Considers adding content from all git-*.sh scripts:
 + ``-a`` ``--all``
   + Automatically stages *deleted* and *modified* files before **commit**.
 + ``-p`` ``--patch``
+  + Use the interactive patch selection interface to choose which changes to commit.
++ ``-m <msg>`` ``--message=<msg>``
+  + Commit message
++ ``<path>``
+  + commit the contents of the files that match the pathspec without recording the changes already added to the index.
 ---
 </details>
 
@@ -109,47 +174,254 @@ Considers adding content from all git-*.sh scripts:
 <summary><b>git stash</b> <a href="https://git-scm.com/docs/git-stash">docs</a> </summary>
 
 ---
+COMMANDS
++ ``push [-p|--patch] [-u|--include-untracked] [-a|--all] [-q|--quiet] [-m|--message <message>] <path>``
+  + Save your local modifications to a new stash entry and roll them back to HEAD (in the working tree and in the index). 
+  The <message> part is optional and gives the description along with the stashed state.
++ ``list``
+  + List the stash entries that you currently have.
++ ``show [-u|--include-untracked|--only-untracked] [<diff-options>] [<stash>]``
+  + Show the changes recorded in the stash entry as a diff between the stashed contents and the commit back when the stash 
+  entry was first created.
++ ``pop [--index] [-q|--quiet] [<stash>]``
+  + Remove a single stashed state from the stash list and apply it on top of the current working tree state.
++ ``clear``
++ ``drop``
 
+OPTIONS
++ ``-a`` ``-all``
++ ``-u`` ``--include-untracked`` ``--no-include-untracked``
++ ``--index``
+  + This option is only valid for ``pop`` and ``apply`` commands.
++ ``-p`` ``--patch``
+  + This option is only valid for ``push`` and ``save`` commands. Interactively select hunks from the diff between HEAD and the 
+  working tree to be stashed.
 ---
 </details>
 
 [//]: # (status)
 <details>
 
-<summary><b>git </b> <a href="https://git-scm.com/docs/git-">docs</a> </summary>
+<summary><b>git status</b> <a href="https://git-scm.com/docs/git-status">docs</a> </summary>
 
 ---
-
++ ``-s`` ``--short``
++ ``-b`` ``--branch``
++ ``--show-stash``
++ ``--porcelain[=<version]``
+  + Give the output in an easy-to-parse format for scripts. This is similar to the short output, but will remain stable 
+  across Git versions and regardless of user configuration. See below for details.
++ ``-v -vv`` ``--verbose``
++ ``<pathspec>``
 ---
 </details>
 
 [//]: # (log)
 <details>
 
-<summary><b>git </b> <a href="https://git-scm.com/docs/git-log">docs</a> </summary>
+<summary><b>git log</b> <a href="https://git-scm.com/docs/git-log">docs</a> </summary>
+
+https://www.atlassian.com/git/tutorials/git-log
 
 ---
-
++ ``--short``
++ ``--graph``
++ ``--oneline``
++ ``--follow``
+  + Continue listing the history of a file beyond renames (works only for a single file)
++ ``--decorate[=short|full|auto|no]``
++ ``--full-diff``
++ ``--all``
+  + Pretend as if all the refs in refs/, along with HEAD, are listed on the command line as <commit>
++ ``<path>``
+  + Show only commits that are enough to explain how the files that match the specified paths came to be.
++ ``-n <number>``
+  + Limit the number of commits to output
 ---
 </details>
 
 [//]: # (branch)
 <details>
 
-<summary><b>git </b> <a href="https://git-scm.com/docs/git-">docs</a> </summary>
+<summary><b>git branch</b> <a href="https://git-scm.com/docs/git-branch">docs</a> </summary>
 
 ---
-
++ ``-d`` ``-delete``
++ ``-D``
+  + Shortcut for ``--delete --force``
++ ``-m`` ``--move``
+  + Move/rename a branches, together with its config and reflog.
++ ``-M``
+  + Shortcut for ``--move --force``
++ ``-c`` ``--copy``
++ ``-r`` ``--remotes``
+  + List  the remote-tracking branches.
++ ``-a`` ``--all``
++ ``-v`` ``-vv`` ``-verbose``
++ ``-q`` ``-quiet``
++ ``--contains [<commit>]``
+  + Only list branches which contain the specified commit (HEAD if not specified). Implies ``--list.``
++ ``<branchname>``
 ---
 </details>
 
 [//]: # (diff)
 <details>
 
+<summary><b>git diff</b> <a href="https://git-scm.com/docs/git-diff">docs</a> </summary>
+
+---
+````bash
+git diff [<options>] [<commit>] [--] [<path>…​]
+git diff [<options>] --cached [--merge-base] [<commit>] [--] [<path>…​]
+git diff [<options>] [--merge-base] <commit> [<commit>…​] <commit> [--] [<path>…​]
+git diff [<options>] <commit>…​<commit> [--] [<path>…​]
+git diff [<options>] <blob> <blob>
+git diff [<options>] --no-index [--] <path> <path> 
+````
++ ``--raw``
+  + Generate the diff in raw format.
++ ``--minimal``
+  + Spend extra time to make sure the smallest possible diff is produced.
++ ``--patience`` ``--histogram`` ``--diff-algorithm={patience|minimal|histogram|myers}``
+  + Generate a diff using the "patience diff"/"histogram/... diff" algorithm.
+---
+</details>
+
+[//]: # (clone)
+<details>
+
+<summary><b>git clone</b> <a href="https://git-scm.com/docs/git-clone">docs</a> </summary>
+
+---
++ ``-l`` ``--local``
+  + When the repository is on a local machine.
++ ``-v`` ``--vebose``
++ ``-o <name>`` ``--origin <name>``
+  + Override the default remote name (origin)
++ ``-b <name>`` ``--branch <name>``
+  + Instead of pointing the newly created HEAD, point to ``<name>``
++ ``--depth <depth>``
+  + Create a shallow clone with a history truncated to the specified number of commits. Implies ``--single-branch``
++ ``<repository>``
++ ``<directory>``
+---
+</details>
+
+[//]: # (checkout)
+<details>
+
+<summary><b>git checkout</b> <a href="https://git-scm.com/docs/git-checkout">docs</a> </summary>
+
+---
++ ``-f`` ``--focre``
+  + When switching branches, proceed even if the index or the working tree differs from ``HEAD``
++ ``-b <new-branch>`` ``-B <new-branch>``
+  + Create a new branch named ``<new-branch>`` and start it at ``<start-point>``
++ ``--ours`` ``--theirs``
+  + When checking out paths from the index, check out stage #2 (ours) or #3 (theirs) for unmerged paths.
++ ``-d`` ``--detach``
+  + Rather than checking out a branch to work on it, check out a commit for inspection and discardable experiments.
++ ``--orphan <new-branch>``
+  + The first commit made on this new branch will have no parents and it will be the root of a new history totally 
+  disconnected from all the other branches and commits.
++ ``-m`` ``--merge``
+  + With this option, a three-way merge between the current branch, your working tree contents, and the new branch is done.
++ ``<branch>``
++ ``<new_branch>``
++ ``<start-point>``
++ ``<commit>``
+
+EXAMPLE
++ ``git checkout [<branch>]``
+  + To prepare for working on ``<branch>``.
++ ``git checkout -b|-B <new-branch> [<start-point>]``
+  + Specifying ``-b`` causes a new branch to be created as if ``git-branch`` were called and then checked out.
++ ``git checkout --detach [<commit>]``
+  + Prepare to work on top of ``<commit>``, by detaching HEAD at it.
++ ``git checkout [-f|--ours|--theirs|-m|--conflict=<style>] [<tree-ish>] [--] <pathspec>``
+  + Overwrite the contents of the files that match the pathspec. When the ``<tree-ish>`` (most often a commit) is not given, 
+  overwrite working tree with the contents in the index.
+---
+</details>
+
+[//]: # (pull)
+<details>
+
+<summary><b>git pull</b> <a href="https://git-scm.com/docs/git-pull">docs</a> </summary>
+
+---
+todo
+---
+</details>
+
+[//]: # (push)
+<details>
+
+<summary><b>git push</b> <a href="https://git-scm.com/docs/git-push">docs</a> </summary>
+
+---
+todo
+---
+</details>
+
+[//]: # (merge)
+<details>
+
+<summary><b>git merge</b> <a href="https://git-scm.com/docs/git-merge">docs</a> </summary>
+
+---
+todo
+---
+</details>
+
+[//]: # (fetch)
+<details>
+
+<summary><b>git fetch</b> <a href="https://git-scm.com/docs/git-fetch">docs</a> </summary>
+
+---
+todo
+---
+</details>
+
+[//]: # (rebase)
+<details>
+
+<summary><b>git rebase</b> <a href="https://git-scm.com/docs/git-rebase">docs</a> </summary>
+
+---
+todo
+---
+</details>
+
+[//]: # (revert)
+<details>
+
+<summary><b>git revert</b> <a href="https://git-scm.com/docs/git-revert">docs</a> </summary>
+
+---
+todo
+---
+</details>
+
+[//]: # ()
+<details>
+
 <summary><b>git </b> <a href="https://git-scm.com/docs/git-">docs</a> </summary>
 
 ---
+todo
+---
+</details>
 
+[//]: # ()
+<details>
+
+<summary><b>git </b> <a href="https://git-scm.com/docs/git-">docs</a> </summary>
+
+---
+todo
 ---
 </details>
 

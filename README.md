@@ -429,7 +429,7 @@ Implements Singleton Pattern to ensure only one instance of the connection is pr
 ```Java
 public class Database {
     final String DRIVER = "oracle.jdbc.driver.OracleDriver";
-    final String CONNECTION = "jdbc:oracle:thin:@dbexpress.westeurope.cloudapp.azure.com:1521:xe";
+    final String CONNECTION = "jdbc:oracle:thin:@dbexpress.com:1521:xe";
     static Database instance = null;
     Connection connection;
     
@@ -476,11 +476,11 @@ public class Database {
 
 ## KeyWords Dictionary
 
-|   Term  |    Defenition    |
-| ---- |-------- |
-| `Fat jar / Uber jar` | an uber-jar is an "over-jar", one level up from a simple JAR (a), defined as one that contains both your package and all its dependencies in one single JAR file. <a href="https://stackoverflow.com/questions/11947037/what-is-an-uber-jar">_<stackoverflow.com/questions/what-is-an-uber-jar>_</a> |
-| `Maven / gradle` | Package Manager aka Dependency resolver. Assists in resolving the dependencies of a project build. | 
-| `JavaBean` | **A JavaBean is just a standard.** All properties are private (use getters/setters), A public no-argument constructor, Implements Serializable. <a href="https://stackoverflow.com/questions/3295496/what-is-a-javabean-exactly">_<stackoverflow.com/questions/what-is-a-javabean-exactly>_</a>
-| `Serializable` | Serializability of a class is enabled by the class implementing the java.io.Serializable interface. Classes that do not implement this interface will not have any of their state serialized or deserialized. All subtypes of a serializable class are themselves serializable. The serialization interface has no methods or fields and serves only to identify the semantics of being serializable. |
+| Term                 | Defenition                                                                                                                                                                                                                                                                                                                                                                                            |
+|----------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `Fat jar / Uber jar` | an uber-jar is an "over-jar", one level up from a simple JAR (a), defined as one that contains both your package and all its dependencies in one single JAR file. <a href="https://stackoverflow.com/questions/11947037/what-is-an-uber-jar">_<stackoverflow.com/questions/what-is-an-uber-jar>_</a>                                                                                                  |
+| `Maven / gradle`     | Package Manager aka Dependency resolver. Assists in resolving the dependencies of a project build.                                                                                                                                                                                                                                                                                                    | 
+| `JavaBean`           | **A JavaBean is just a standard.** All properties are private (use getters/setters), A public no-argument constructor, Implements Serializable. <a href="https://stackoverflow.com/questions/3295496/what-is-a-javabean-exactly">_<stackoverflow.com/questions/what-is-a-javabean-exactly>_</a>                                                                                                       |
+| `Serializable`       | Serializability of a class is enabled by the class implementing the java.io.Serializable interface. Classes that do not implement this interface will not have any of their state serialized or deserialized. All subtypes of a serializable class are themselves serializable. The serialization interface has no methods or fields and serves only to identify the semantics of being serializable. |
 
  ---
