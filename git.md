@@ -1,6 +1,7 @@
 # Git:
 
-**[git glossary](https://git-scm.com/docs/gitglossary)** 
+|[git glossary](https://git-scm.com/docs/gitglossary)| [commands](#git-commands) |
+|:--------------------------------------------------:|---------------------------|
 
 ---
 
