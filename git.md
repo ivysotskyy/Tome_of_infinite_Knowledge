@@ -1,6 +1,7 @@
-# Git:
+# GIT <img src="./git/logo.png" alt="logo" height="50" />
 
-**[git glossary](https://git-scm.com/docs/gitglossary)** 
+| [git glossary](https://git-scm.com/docs/gitglossary) | [commands](#git-commands) | [Ignoring patterns](#ignoring-patterns) | [Tips&Tricks](#tips-&-tricks) |
+|:----------------------------------------------------:|---------------------------|-----------------------------------------|-------------------------------|
 
 ---
 
@@ -70,28 +71,25 @@ EXAMPLE
 
 
 COMMANDS
-+ ``add``
-+ ``rename``
-+ ``rm``
++ ``add <name>``
+  + Add a remote named ``<name>`` for the repository at ``<URL>``. The command git fetch <name> can then be used to create and 
+  update remote-tracking branches ``<name>/<branch>``.
+  + ``-f`` option, ``git fetch <name>`` is run immediately after the remote information is set up.
++ ``rename`` ``rm``
+  + Removes the remote named ``<name>``. All remote-tracking branches and configuration settings for the remote are removed.
 + ``sest-head``
-+ 
-# #TODO
-+ 
-```
-git remote [-v | --verbose]
-git remote add [-t <branch>] [-m <master>] [-f] [--[no-]tags] [--mirror=(fetch|push)] <name> <URL>
-git remote rename [--[no-]progress] <old> <new>
-git remote remove <name>
-git remote set-head <name> (-a | --auto | -d | --delete | <branch>)
-git remote set-branches [--add] <name> <branch>…​
-git remote get-url [--push] [--all] <name>
-git remote set-url [--push] <name> <newurl> [<oldurl>]
-git remote set-url --add [--push] <name> <newurl>
-git remote set-url --delete [--push] <name> <URL>
-git remote [-v | --verbose] show [-n] <name>…​
-git remote prune [-n | --dry-run] <name>…​
-git remote [-v | --verbose] update [-p | --prune] [(<group> | <remote>)…​]
-```
+  + Sets or deletes the default branch (i.e. the target of the ``symbolic-ref refs/remotes/<name>/HEAD)`` for the named remote.
++ ``set-branches`` 
+  + Changes the list of branches tracked by the named remote. This can be used to track a subset of the available remote 
+  branches after the initial setup for a remote.
++ ``get-url``
+  + Retrieves the URLs for a remote.
++ ``set-url``
+  + Changes URLs for the remote.
++ ``show``
+  + Gives some information about the remote ``<name>``.
++ ``update``
+  + Fetch updates for remotes or remote groups in the repository.
 ---
 </details>
 
@@ -442,3 +440,12 @@ matches or wildcard globs.
   git config --global core.excludesfile [file]
 ```
 system wide ignore pattern for all local repositories
+
+---
+
+## Tips & Tricks
+
+### Beautiful ``git log``
+````bash
+  git log --all --graph --decorate --oneline --simplify-by-decoration
+````
