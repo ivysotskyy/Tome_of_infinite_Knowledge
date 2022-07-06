@@ -1,7 +1,7 @@
 # GIT <img src="./git/logo.png" alt="logo" height="50" />
 
-| [git glossary](https://git-scm.com/docs/gitglossary) | [commands](#git-commands) | [Ignoring patterns](#ignoring-patterns) | [Tips&Tricks](#tips-&-tricks) |
-|:----------------------------------------------------:|---------------------------|-----------------------------------------|-------------------------------|
+| [git glossary](https://git-scm.com/docs/gitglossary) | [commands](#git-commands) | [ignoring patterns](#ignoring-patterns) | [Tips&Tricks](#tips-&-tricks) | [detached head](#detached-head) |
+|:----------------------------------------------------:|---------------------------|-----------------------------------------|-------------------------------|---------------------------------|
 
 ---
 
@@ -67,8 +67,6 @@ EXAMPLE
 <summary><b>git remote</b> <a href="https://git-scm.com/docs/git-remote">docs</a> </summary>
 
 ---
-
-
 
 COMMANDS
 + ``add <name>``
@@ -214,6 +212,31 @@ OPTIONS
 ---
 </details>
 
+[//]: # (switch)
+<details>
+
+<summary><b>git switch</b> <a href="https://git-scm.com/docs/git-switch">docs</a></summary>
+Switch to a specified branch. The working tree and the index are updated to match the branch. All new commits will be 
+added to the tip of this branch.
+
+---
++ ``<branch>``
++ ``<new-branch>``
++ ``<start-point``
+  + The starting point for the new branch. Specifying a <start-point> allows you to create a branch based on some other 
+  point in history than where HEAD currently points.
++ ``-c <new-branch>`` ``-c <new-branch>``
+  + Create a new branch named ``<new-branch>`` starting before switching to the branch.
++ ``-C <new-branch`` ``--force-create <new-branch>``
+  + Similar to ``--create`` except that if <new-branch> already exists, it will be reset to ``<start-point>``.
++ ``-d`` ``--detach``
+  + Switch to a commit for inspection and discardable experiments. See the "[DETACHED HEAD](#detached-head)"  section.
++ ``-t`` ``--track``
+  + When creating a new branch, set up "upstream" configuration. ``-c`` is implied.
+
+---
+</details>
+
 [//]: # (log)
 <details>
 
@@ -349,7 +372,22 @@ EXAMPLE
 <summary><b>git pull</b> <a href="https://git-scm.com/docs/git-pull">docs</a> </summary>
 
 ---
-todo
+Merging options 
++ ``--commit`` ``--no-commit``
+  + Perform the merge and commit the result.
++ ``--stat`` ``-n``
+  + Show a diffstat at the end of the merge.
++ ``--edit`` ``-e``
+  + Invoke an editor before committing successful mechanical merge to further edit the auto-generated merge message.
+
+Fetching options
++ ``--all`` 
+  + Fetch all remotes
++ ``-a`` ``--append``
+  + Append ref names and object names of fetched refs to the existing content of ``.git/FETCH_HEAD``
++ ``--atomic``
+  + Use an atomic transaction to update local refs. Either all refs are updated, or on error, no refs are updated.
+
 ---
 </details>
 
@@ -359,7 +397,9 @@ todo
 <summary><b>git push</b> <a href="https://git-scm.com/docs/git-push">docs</a> </summary>
 
 ---
-todo
++ ``<repository>``
+  + The "remote" repository that is destination of a push operation. This parameter can be either a URL or the name of a remote.
++ ``<refspec>``
 ---
 </details>
 
@@ -413,16 +453,6 @@ todo
 ---
 </details>
 
-[//]: # ()
-<details>
-
-<summary><b>git </b> <a href="https://git-scm.com/docs/git-">docs</a> </summary>
-
----
-todo
----
-</details>
-
 ----
 
 ## Ignoring patterns:
@@ -449,3 +479,7 @@ system wide ignore pattern for all local repositories
 ````bash
   git log --all --graph --decorate --oneline --simplify-by-decoration
 ````
+
+---
+
+## DETACHED HEAD
