@@ -20,3 +20,5 @@
 
 [Why is processing a sorted array faster than processing an unsorted array?](https://stackoverflow.com/questions/11227809/why-is-processing-a-sorted-array-faster-than-processing-an-unsorted-array?noredirect=1&lq=1)
 
+[Abstraction](https://softwareengineering.stackexchange.com/questions/439843/where-should-interfaces-be-used)
+
