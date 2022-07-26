@@ -12,7 +12,7 @@ Find min and max number in an array of size **N** with just 3\*N/2 comparisons
       if (randomNumbers[i] > randomNumbers[i-1]) {
           max = max > randomNumbers[i] ? max : randomNumbers[i];
           min = min < randomNumbers[i-1] ? min : randomNumbers[i-1];
-      }else if (randomNumbers[i] < randomNumbers[i-1]) {
+      }else {
           min = min < randomNumbers[i] ? min : randomNumbers[i];
           max = max > randomNumbers[i - 1] ? max : randomNumbers[i-1];
       }
