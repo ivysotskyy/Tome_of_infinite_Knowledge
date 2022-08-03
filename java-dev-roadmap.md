@@ -55,13 +55,19 @@
 ---
 * <h3>What's next...</h3>
 
+* **GIT**
+* **GitHub**
+* **Linux**
 * Spring / Spring Boot
 * Serialization
 * SQL and JDBC
 * Build tools
   * Gradle
   * Maven
-* HTTP / HTTPS
+* Protocols
+  * HTTP / HTTPS
+  * TCP
+  * SSH
 * JSON
 * Servers
 * Databases
