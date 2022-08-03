@@ -50,7 +50,8 @@
 10. Threads
 11. Concurrent Programming *[lesson](https://docs.oracle.com/javase/tutorial/essential/concurrency/index.html)*
 12. Unit Testing
-13. Best Practice and Coding Structure **[*](https://xperti.io/blogs/java-coding-best-practices/#1_Use_Proper_Naming_Conventions)**
+13. **SOLID**
+14. Best Practice and Coding Structure **[*](https://xperti.io/blogs/java-coding-best-practices/#1_Use_Proper_Naming_Conventions)**
 
 ---
 * <h3>What's next...</h3>
