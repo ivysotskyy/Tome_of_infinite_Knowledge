@@ -14,10 +14,11 @@
    * ``do while``
    * ``foreach``
 6. Functions **[*!](https://www.javatpoint.com/method-in-java)**
-7. _Classes & Objects_ **[*!](https://docs.oracle.com/javase/tutorial/java/javaOO/index.html)**
-8. String Class **[*](https://www.javatpoint.com/java-string)**
-9. *Java I/O*: Working With Files 
-10. Algorithms
+7. Exception Handling
+8. _Classes & Objects_ **[*!](https://docs.oracle.com/javase/tutorial/java/javaOO/index.html)**
+9. String Class **[*](https://www.javatpoint.com/java-string)**
+10. *Java I/O*: Working With Files 
+11. Algorithms
     1. Collection Framework **[*!](https://www.javatpoint.com/collections-in-java)**
        * List
        * Set
@@ -25,7 +26,7 @@
        * Queue
     2. DataStructures
     3. Recursion
-11. Garbage Collection
+12. Garbage Collection
 
 * <h3>Advanced</h2>
 
