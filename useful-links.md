@@ -14,6 +14,8 @@
 
 [Rough consensus](https://en.wikipedia.org/wiki/Rough_consensus)
 
+[Idiomatic Code](https://stackoverflow.com/questions/84102/what-is-idiomatic-code/84270#84270)
+
 ### Favorite stackoverflow qustions
 
 [Real world use cases of bitwise operators](https://stackoverflow.com/questions/2096916/real-world-use-cases-of-bitwise-operators)
