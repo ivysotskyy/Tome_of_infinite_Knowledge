@@ -8,6 +8,8 @@
 
 [Sacrificial architecture: Learning from abandoned systems](https://stackoverflow.blog/2021/03/01/sacrificial-architecture-learning-from-abandoned-systems/)
 
+[The Chestertons fence principle](https://josephwoodward.co.uk/2020/04/software-the-chestertons-fence-principle)
+
 ### Software development terms
 
 [YAGNI](https://en.wikipedia.org/wiki/You_aren%27t_gonna_need_it)
