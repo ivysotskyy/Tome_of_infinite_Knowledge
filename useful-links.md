@@ -14,7 +14,7 @@
 
 [Rough consensus](https://en.wikipedia.org/wiki/Rough_consensus)
 
-[Idiomatic Code](https://stackoverflow.com/questions/84102/what-is-idiomatic-code/84270#84270)
+[Idiomatic Code](https://stackoverflow.com/a/84270/19238684)
 
 ### Favorite stackoverflow qustions
 
