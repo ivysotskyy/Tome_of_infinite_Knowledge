@@ -11,6 +11,7 @@
 ### Software development terms
 
 [YAGNI](https://en.wikipedia.org/wiki/You_aren%27t_gonna_need_it)
+[Rough consensus](https://en.wikipedia.org/wiki/Rough_consensus)
 
 ### Favorite stackoverflow qustions
 
