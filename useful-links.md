@@ -22,6 +22,8 @@
 
 ### Favorite stackoverflow qustions
 
+[Dependency Injection](https://softwareengineering.stackexchange.com/questions/232229/understanding-dependency-injection)
+
 [Real world use cases of bitwise operators](https://stackoverflow.com/questions/2096916/real-world-use-cases-of-bitwise-operators)
 
 [What is the "N+1 selects problem"](https://stackoverflow.com/questions/97197/what-is-the-n1-selects-problem-in-orm-object-relational-mapping)
