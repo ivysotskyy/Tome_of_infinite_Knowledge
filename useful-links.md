@@ -12,6 +12,8 @@
 
 [Learn to Read Code](https://stackoverflow.blog/2022/08/15/how-to-interrogate-unfamiliar-code/?cb=1&_ga=2.179924964.1387367599.1660630084-1388060804.1630934978)
 
+https://www.geeksforgeeks.org/powers-of-2-to-required-sum-using-bit-masking/
+
 ### Software development terms
 
 [YAGNI](https://en.wikipedia.org/wiki/You_aren%27t_gonna_need_it)
