@@ -180,7 +180,34 @@ public class JavaConfiguration {
 <details id="autowired">
 <summary> <b>@Autowired</b> </summary>
 <p>
-    The Spring framework enables automatic dependency injection. In othe
+    This annotation is applied on fields, setter methods, and constructors. The 
+    <b>@Autowired</b> annotation injects object dependency implicitly.<br>
+    Whe you use <b>@Autowired</b> on fields and pass the values for the fields 
+    using property name, Spring will automatically assign the fields with the
+    passed values.
+</p>
+<p>
+    When you use <b>@Autowired</b> on a constructor, constructor injection happens at 
+    the time of object creation. It indicates the constructor to autowire when 
+    used as a bean. One thing to note here is that only one constructor of any 
+    bean class can carry the <b>@Autowired</b> annotation.
+</p>
+
+```
+@Component
+public class Customer {
+    private Person person;
+    @Autowired
+    public Customer (Person person) {          
+      this.person=person;
+    }
+}
+```
+
+<p>
+    NOTE: As of Spring 4.3, <b>@Autowired</b> became optional on classes with a single 
+    constructor. In the above example, Spring would still inject an instance of 
+    the Person class if you omitted the <b>@Autowired</b> annotation.
 </p>
 </details>
 
