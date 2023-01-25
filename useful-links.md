@@ -1,5 +1,7 @@
 ### Interesting reads
 
+[Self-Hosting guide](https://github.com/mikeroyal/Self-Hosting-Guide)
+
 [Jack of all trades or master of One](https://blog.devgenius.io/jack-of-all-trades-or-master-of-one-which-one-are-you-52ed58c5cbb6)
 
 [Future proofing in a world of inevitable change](https://stackoverflow.blog/2022/05/19/crystal-balls-and-clairvoyance-future-proofing-in-a-world-of-inevitable-change/)
