@@ -44,3 +44,6 @@ https://www.geeksforgeeks.org/powers-of-2-to-required-sum-using-bit-masking/
 
 ### [Refactoring](https://refactoring.com/)
 
+### Agile
+
+[Humanizing Work splitting user stories](https://www.humanizingwork.com/the-humanizing-work-guide-to-splitting-user-stories)
